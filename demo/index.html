@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>firebase-upload-image demo</title>
+
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../bower_components/iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+  <link rel="import" href="../firebase-upload-image.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Basic firebase-upload-image demo</h3>
+    <demo-snippet>
+      <template>
+        <firebase-app 
+          name="demo" 
+          api-key="AIzaSyDeUgPC2-9IScm8c0kBkNk2_vOOVBC6qks" 
+          auth-domain="project-84126331935860088.firebaseapp.com"
+          database-url="https://project-84126331935860088.firebaseio.com" 
+          storage-bucket="project-84126331935860088.appspot.com"> </firebase-app>
+        
+          <firebase-upload-image app-name="demo"></firebase-upload-image>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>

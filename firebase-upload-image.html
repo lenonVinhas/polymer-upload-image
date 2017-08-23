@@ -1,0 +1,93 @@
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<dom-module id="firebase-upload-image">
+  <template>
+    <style media="screen">
+       :host {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        min-height: 100px;
+        width: 100%;
+      }
+
+      progress {
+        width: 100%;
+        margin-bottom: 5px;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+    </style>
+
+    <progress id="upProg" value="0" max="100">0%</progress>
+    <input id="fileButt" type="file" value="upload" accept="[[fileType]]" />
+  </template>
+
+  <script>
+    /**
+     * `firebase-upload-image`
+     * A simple element to upload images from firebase
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class FirebaseUploadImage extends Polymer.Element {
+      static get is() {
+        return 'firebase-upload-image';
+      }
+
+      ready() {
+        super.ready();
+        this.$.fileButt.addEventListener('change', e => this._handleFile(e));
+      }
+      
+      static get properties() {
+        return {
+          appName: {
+            type: String,
+            value: 'app'
+          },
+          directory: {
+            type: String,
+            value: 'img/'
+          },
+          storedName: {
+            type: String,
+            value: ''
+          },
+          fileType: {
+            type: String,
+            value: 'image/*'
+          }
+
+        };
+      }
+      
+      _handleFile(event) {
+        let file = event.target.files[0];
+        let dest = '';
+        let prog = this.$.upProg;
+
+        dest = this.directory + (this.storedName != '' ? this.storedName : file.name);
+        let fbsImageRef = firebase.app(this.appName).storage().ref(dest);
+        let monitor = fbsImageRef.put(file);
+        monitor.on('state_changed', 
+        function progress(snapshot) {
+          prog.value = 100 * (snapshot.bytesTransferred / snapshot.totalBytes);
+        },
+        function error(err){
+          console.log(`Error: ${err.code}`);
+        },
+        function complete(){
+          console.log(`Complete: ${dest}`);
+        });
+      }
+    }
+
+    window.customElements.define(FirebaseUploadImage.is, FirebaseUploadImage);
+  </script>
+</dom-module>
